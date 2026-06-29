@@ -1,0 +1,21 @@
+import { z } from "zod";
+
+const envSchema = z.object({
+    NODE_ENV: z.enum(["dev", "prod", "test"]),
+
+    PORT: z.coerce.number().default(5000), //coerce converts env string to number,
+
+    MONGO_URI: z.string().min(1),
+
+    JWT_SECRET: z.string().min(10),
+
+    JWT_EXPIRES_IN: z.string(),
+
+    CLIENT_URL: z.string().url(),
+
+    REDIS_URL: z.string().optional(),
+
+    CLAUDE_API_KEY: z.string().optional(),
+});
+
+export default envSchema;
