@@ -1,7 +1,9 @@
 import User from "../users/user.model.js";
 import AppError from "../../shared/errors/appError.js";
 import bcrypt from "bcryptjs";
-import generate from "../../shared/utils/generateToken.js";
+import generate from "../../shared/utils/generateAccessToken.js";
+import generateRefToken from "../../shared/utils/generateRefreshToken.js";
+import crypto from "crypto";
 
 class authService {
     async register(userData) {
@@ -17,9 +19,17 @@ class authService {
             password:hashPass,
         });
 
-        const token = await generate({
+        const refreshToken = generateRefToken({
             userId: user._id,
-            email: user.email
+        });
+
+        const hashRefToken = crypto.createHash("sha256").update(refreshToken).digest("hex");
+
+        user.refreshToken = hashRefToken;
+        await user.save();
+
+        const accessToken = await generate({
+            userId: user._id,
         });
 
         const userObject = user.toObject();
@@ -27,7 +37,8 @@ class authService {
         delete userObject.refreshToken;
 
         return {
-            token,
+            accessToken,
+            refreshToken,
             user:userObject,
         }
     }
@@ -45,16 +56,24 @@ class authService {
             throw new AppError("Invalid email or password.", 401)
         };
 
-        const token = await generate({
+        const refreshToken = generateRefToken({
             userId: checkUser._id,
-            email: checkUser.email
+        });
+
+        const hashRefToken = crypto.createHash("sha256").update(refreshToken).digest("hex");
+        checkUser.refreshToken = hashRefToken;
+        await checkUser.save();
+
+        const accessToken = generate({
+            userId: checkUser._id,
         });
 
         const userObj = checkUser.toObject();
         delete userObj.password;
         delete userObj.refreshToken;
         return {
-            token:token,
+            accessToken,
+            refreshToken,
             user:userObj,
         };
 

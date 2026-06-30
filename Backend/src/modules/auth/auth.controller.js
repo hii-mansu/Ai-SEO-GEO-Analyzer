@@ -1,58 +1,76 @@
-import { success } from "zod";
 import asyncHandler from "../../shared/utils/asyncHandler.js";
 import authService from "./auth.service.js";
 import env from "../../config/env.js";
+import generate from "../../shared/utils/generateAccessToken.js";
+import User from "../users/user.model.js";
 
-class authController{
-            register = asyncHandler(async (req, res) => {
-        const { token, user } = await authService.register(req.body);
+class authController {
+  register = asyncHandler(async (req, res) => {
+    const { accessToken, refreshToken, user } = await authService.register(req.body);
 
-        res.cookie("accessToken", token, {
-            httpOnly: true,
-            secure: env.NODE_ENV === "prod",
-            sameSite: "lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-        });
-
-        res.status(201).json({
-            success: true,
-            message: "User registered successfully",
-            user,
-        });
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: env.NODE_ENV === "prod",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    login = asyncHandler(async (req,res)=>{
-        const {token, user} = await authService.login(req.body);
-        console.log(token, "Exist");
+    res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+      user,
+      accessToken,
+    });
+  });
 
-        res.cookie("accessToken", token, {
-            httpOnly: true,
-            secure: env.NODE_ENV === "prod",
-            sameSite: "lax",
-            maxAge: 7*24*60*60*1000,
-        });
+  login = asyncHandler(async (req, res) => {
+    const { accessToken, refreshToken, user } = await authService.login(req.body);
 
-        res.status(201).json({
-            success: true,
-            message:"logged in successfully.",
-            user,
-        })
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: env.NODE_ENV === "prod",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    logout = asyncHandler(async (req, res) => {
+    res.status(200).json({
+      success: true,
+      message: "logged in successfully.",
+      user,
+      accessToken,
+    });
+  });
 
-    res.clearCookie("accessToken", {
-        httpOnly: true,
-        secure: env.NODE_ENV === "prod",
-        sameSite: "lax",
+  logout = asyncHandler(async (req, res) => {
+
+    await User.findByIdAndUpdate(req.user._id, {
+      refreshToken:null
+    })
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: env.NODE_ENV === "prod",
+      sameSite: "lax",
     });
 
     return res.status(200).json({
-        success: true,
-        message: "Logged out successfully",
+      success: true,
+      message: "Logged out successfully",
+    });
+  });
+
+  accessTokenGen = asyncHandler(async(req,res)=>{
+    const accessToken = generate({userId:req.user._id});
+
+    res.status(200).json({
+      success: true,
+      message: "Access token refreshed.",
+      user:req.user,
+      accessToken
     });
 
-});
+  })
+
 }
 
 export default new authController();
