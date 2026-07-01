@@ -8,6 +8,7 @@ import morgan from "morgan";
 import authRouter from "./modules/auth/auth.routes.js";
 import errorHandler from "./middleware/errorHandler.js";
 import cookieParser from "cookie-parser";
+import analysisRouter from "./modules/analysis/analysis.routes.js";
 
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(cookieParser());
 
 app.use("/", healthRouter);
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/analysis", analysisRouter);
 
 app.use(errorHandler);
 
