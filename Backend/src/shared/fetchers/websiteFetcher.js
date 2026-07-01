@@ -12,9 +12,13 @@ const websiteFetcher = async (url) => {
       },
     });
 
-    if(response.headers["content-type"] !== startsWith("text/html")){
+    if(!response.data){
       throw new AppError("This is not HTML page.", 400);
     }
+
+    // if(response.headers.date["content-type"] !== response.data.startsWith("text/html")){
+    //   throw new AppError("This is not HTML page.", 400);
+    // }
 
     return {
       html: response.data,

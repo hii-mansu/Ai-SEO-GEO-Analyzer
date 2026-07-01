@@ -1,5 +1,7 @@
 import z from "zod";
 
-export const analysisValidSchema = z.object({
-    url: z.string().trim().min("Enter valid url",5)
+const analysisValidSchema = z.object({
+    url: z.string().trim().min(5,"Enter valid url")
 })
+
+export default analysisValidSchema
