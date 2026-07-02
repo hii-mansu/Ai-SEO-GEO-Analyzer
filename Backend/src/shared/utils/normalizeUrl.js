@@ -2,10 +2,10 @@ const normalizeUrl = (url) => {
     url = url.trim();
 
     if (url.startsWith("http://") || url.startsWith("https://")) {
-        return url;
+        return new URL(url).origin;;
     }
 
-    return `https://${url}`;
+    return new URL(`https://${url}`).origin;
 };
 
 export default normalizeUrl;
