@@ -14,6 +14,9 @@ const htmlParser = ({ html, finalUrl }) => {
   const description =
     $('meta[name="description"]').attr("content")?.trim() || null;
 
+  const keywords = 
+    $('meta[name="keywords"]').attr("content") || null;
+
   const charset =
     $('meta[charset]').attr("charset") || null;
 
@@ -42,6 +45,7 @@ const htmlParser = ({ html, finalUrl }) => {
 
     meta: {
       description,
+      keywords,
       charset,
       viewport,
     },
