@@ -20,6 +20,8 @@ const envSchema = z.object({
     REDIS_URL: z.string().optional(),
 
     CLAUDE_API_KEY: z.string().optional(),
+
+    GEMINI_API_KEY: z.string().optional(),
 });
 
 export default envSchema;

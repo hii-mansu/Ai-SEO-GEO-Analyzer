@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
 
 const seoParser = (html) => {
-  const $ = cheerio.load(html.html);
+  const $ = cheerio.load(html);
 
 
   const headings = {};
@@ -83,6 +83,27 @@ const seoParser = (html) => {
     }
   });
 
+  const paragraphs = [];
+
+$("p").each((_, element) => {
+  const text = $(element).text().replace(/\s+/g, " ").trim();
+
+  if (text.length > 20) {
+    paragraphs.push(text);
+  }
+});
+
+const limitedParagraphs = paragraphs.slice(0, 20);
+
+const bodyText = $("body")
+  .text()
+  .replace(/\s+/g, " ")
+  .trim();
+
+const wordCount = bodyText
+  ? bodyText.split(/\s+/).length
+  : 0;
+
   const openGraph = {
     title:
       $('meta[property="og:title"]').attr("content") || null,
@@ -133,6 +154,11 @@ const seoParser = (html) => {
 
   return {
     headings,
+    content: {
+    wordCount,
+    paragraphCount: paragraphs.length,
+    limitedParagraphs,
+},
     images,
     links,
     openGraph,

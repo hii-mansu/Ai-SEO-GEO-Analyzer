@@ -5,37 +5,43 @@ import llmsFetcher from "../../shared/fetchers/llmsFetcher.js";
 import sitemapFetcher from "../../shared/fetchers/sitemapFetcher.js";
 import htmlParser from "../../shared/parsers/htmlParser.js";
 import seoParser from "../../shared/parsers/seoParser.js";
+import buildAiInput from "../../shared/ai/aiInputs.js";
+import analyzeWebsite from "../../shared/ai/llm.js";
 
 class AnalysisService {
+  async analyze(url) {
+    const normalizedUrl = normalizeUrl(url);
 
-    async analyze(url) {
+    const website = await websiteFetcher(normalizedUrl);
 
-        const normalizedUrl = normalizeUrl(url);
+    const htmlReport = htmlParser({
+      html: website.html,
+      finalUrl: website.finalUrl,
+    });
 
-        const website = await websiteFetcher(normalizedUrl);
+    const seoReport = seoParser(website.html);
 
-        const htmlReport = htmlParser({
-            html: website.html,
-            finalUrl: website.finalUrl,
-        });
+    const robots = await robotFetcher(normalizedUrl);
+    const llms = await llmsFetcher(normalizedUrl);
+    const sitemap = await sitemapFetcher(normalizedUrl);
 
-        const seoReport = seoParser({
-            html:website.html,
-        })
+    const report = {
+      ...htmlReport,
+      ...seoReport,
+      robots,
+      llms,
+      sitemap,
+    };
 
-        const robots = await robotFetcher(normalizedUrl);
-        const llms = await llmsFetcher(normalizedUrl);
-        const sitemap = await sitemapFetcher(normalizedUrl);
+    const inputForPrompt = buildAiInput(report);
 
-        return {
-            ...htmlReport,
-            ...seoReport,
-            robots,
-            llms,
-            sitemap
-        };
-    }
+    const finalAiAnalysis = await analyzeWebsite({
+      report:inputForPrompt,
+      url:website.finalUrl
+    });
 
+    return finalAiAnalysis;
+  }
 }
 
 export default new AnalysisService();
