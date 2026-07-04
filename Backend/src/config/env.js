@@ -1,6 +1,5 @@
 import envSchema from "./env.schema.js";
 
-
 const parsedEnv = envSchema.safeParse(process.env);
 
 if (!parsedEnv.success) {
