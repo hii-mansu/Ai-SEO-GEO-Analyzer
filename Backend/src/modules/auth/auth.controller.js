@@ -75,7 +75,7 @@ class authController {
     await authService.forget(req.body);
     res.status(200).json({
       success: true,
-      message: "Access token refreshed.",
+      message: "Reset link has been sent to registered email.",
     });
   })
 

@@ -91,7 +91,7 @@ class authService {
         const token = generateForToken({userId:user._id});
         await user.updateOne({
             resetToken:token,
-            passwordResetExpires: Date.now() + 15 * 60 * 1000,
+            passwordResetExpires: Date.now() + 5 * 60 * 1000,
         });
         console.log(token);
         return;
@@ -101,8 +101,8 @@ class authService {
 
     async reset(userData){
         const {password, resetToken} = userData;
-        const user = await User.findById(resetToken);
-        if(!user.resetToken || (user.resetToken===null)){
+        const user = await User.findOne({resetToken:resetToken});
+        if(!user){
             throw new AppError("")
         }
         const hashPass = await bcrypt.hash(password, 5);

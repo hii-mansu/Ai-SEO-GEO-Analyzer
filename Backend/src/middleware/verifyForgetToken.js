@@ -19,7 +19,7 @@ const verifyForgetToken = asyncHandler(async(req, res, next)=>{
     if(user.resetToken !== req.body.resetToken){
         throw new AppError("2Unauthorized access, user not found.", 401);
     };
-    req.body.resetToken=user._id;
+    //req.body.resetToken=user._id;
     next();
 });
 
