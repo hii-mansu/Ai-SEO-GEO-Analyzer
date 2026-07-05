@@ -71,6 +71,22 @@ class authController {
 
   })
 
+  forgetPass = asyncHandler(async(req, res)=>{
+    await authService.forget(req.body);
+    res.status(200).json({
+      success: true,
+      message: "Access token refreshed.",
+    });
+  })
+
+  resetPass = asyncHandler(async(req,res)=>{
+    const {message} = await authService.reset(req.body);
+    res.status(200).json({
+      success: true,
+      message: message,
+    });
+  })
+
 }
 
 export default new authController();

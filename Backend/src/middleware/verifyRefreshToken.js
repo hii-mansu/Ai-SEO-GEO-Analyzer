@@ -9,7 +9,7 @@ import crypto from "crypto";
 const verifyRefreshToken = asyncHandler(async(req, res, next)=>{
     const refreshToken = req.cookies.refreshToken
     const decoded = jwt.verify(refreshToken, env.JWT_REFRESH_SECRET);
-    const user = await User.findById(decoded.sub);
+    const user = await User.findById(decoded.sub).select("+refreshToken");
     if(!user){
         throw new AppError("Ref - Unauthorized access, user not found.", 401);
     };

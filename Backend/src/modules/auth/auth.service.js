@@ -3,6 +3,7 @@ import AppError from "../../shared/errors/appError.js";
 import bcrypt from "bcryptjs";
 import generate from "../../shared/utils/generateAccessToken.js";
 import generateRefToken from "../../shared/utils/generateRefreshToken.js";
+import generateForToken from "../../shared/utils/generateForgetPassToken.js";
 import crypto from "crypto";
 
 class authService {
@@ -79,6 +80,44 @@ class authService {
 
 
     }
+
+    async forget(userData){
+        const {email} = userData;
+        const user = await User.findOne({email:email});
+        if(!user){
+            return;
+        };
+
+        const token = generateForToken({userId:user._id});
+        await user.updateOne({
+            resetToken:token,
+            passwordResetExpires: Date.now() + 15 * 60 * 1000,
+        });
+        console.log(token);
+        return;
+
+
+    }
+
+    async reset(userData){
+        const {password, resetToken} = userData;
+        const user = await User.findById(resetToken);
+        if(!user.resetToken || (user.resetToken===null)){
+            throw new AppError("")
+        }
+        const hashPass = await bcrypt.hash(password, 5);
+        await user.updateOne({
+            password: hashPass,
+            refreshToken: null,
+            passwordResetExpires: null,
+            refreshToken: null,
+        });
+        return {
+            message:"Changed successfully."
+        };
+    }
+
+    
 }
 
 export default new authService();
