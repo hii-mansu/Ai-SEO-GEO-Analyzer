@@ -26,6 +26,8 @@ const envSchema = z.object({
     CLAUDE_API_KEY: z.string().optional(),
 
     GEMINI_API_KEY: z.string().optional(),
+
+    RESEND_API_KEY: z.string().optional(),
 });
 
 export default envSchema;
