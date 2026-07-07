@@ -14,7 +14,7 @@ const analysisLimit = (req, res, next) => {
       return next();
     }
 
-    const payload = jwt.verify(token, env.JWT_SECRET);
+    const payload = jwt.verify(token, env.JWT_ACCESS_SECRET);
 
     if (payload.used) {
       return next(

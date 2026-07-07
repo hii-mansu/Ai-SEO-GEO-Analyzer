@@ -6,6 +6,7 @@ import ReportPage from "../pages/ReportPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
+import AuthLayout from "../layouts/AuthLayout";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import PricingPage from "../pages/PricingPage";
 import NotFoundPage from "../pages/NotFoundPage";

@@ -1,12 +1,43 @@
 import { Globe, Search, ShieldCheck, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { analyseWebsite } from "../services/analysis.service";
+import { useNavigate } from "react-router-dom";
+import LoadingScreen from '../components/common/LoadingScreen';
 
 function AnalyzePage() {
+  const navigate = useNavigate();
+  const [url, setUrl] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!url.trim()) {
+      setError("Enter valid URL.");
+      return;
+    }
+    setError("");
+    setLoading(true);
+    try {
+      const report = await analyseWebsite(url);
+      navigate("/report", {
+        state: report,
+      });
+    } catch (error) {
+      console.error(error);
+      alert(error.response?.data?.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <LoadingScreen message="Analyzing your website..." />;
+  }
+
   return (
     <section className="min-h-screen bg-slate-950 px-6 py-16">
       <div className="mx-auto max-w-7xl">
-
         <div className="mx-auto max-w-3xl text-center">
-
           <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-400">
             AI Powered Website Analysis
           </span>
@@ -18,19 +49,15 @@ function AnalyzePage() {
           <p className="mt-6 text-lg leading-8 text-slate-400">
             Get an AI-powered SEO, GEO and technical analysis report in seconds.
           </p>
-
         </div>
 
         <div className="mx-auto mt-16 max-w-4xl rounded-3xl border border-white/10 bg-slate-900 p-8 shadow-2xl">
-
           <label className="mb-3 block text-sm font-medium text-slate-300">
             Website URL
           </label>
 
           <div className="flex flex-col gap-4 md:flex-row">
-
             <div className="relative flex-1">
-
               <Globe
                 size={20}
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
@@ -38,30 +65,28 @@ function AnalyzePage() {
 
               <input
                 type="text"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
                 placeholder="https://example.com"
                 className="w-full rounded-xl border border-slate-700 bg-slate-950 py-4 pl-12 pr-4 text-white outline-none focus:border-blue-500"
               />
-
+              {error && <p className="text-sm text-red-500">{error}</p>}
             </div>
 
-            <button className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-8 py-4 font-semibold text-white transition hover:bg-blue-700">
-
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-8 py-4 font-semibold text-white transition hover:bg-blue-700"
+            >
               <Search size={20} />
-
               Analyze
-
             </button>
-
           </div>
 
           <div className="mt-6">
-
-            <p className="text-sm text-slate-500">
-              Try:
-            </p>
+            <p className="text-sm text-slate-500">Try:</p>
 
             <div className="mt-3 flex flex-wrap gap-3">
-
               <button className="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-300 hover:border-blue-500">
                 https://openai.com
               </button>
@@ -73,17 +98,12 @@ function AnalyzePage() {
               <button className="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-300 hover:border-blue-500">
                 https://github.com
               </button>
-
             </div>
-
           </div>
-
         </div>
 
         <div className="mt-20 grid gap-8 md:grid-cols-3">
-
           <div className="rounded-3xl border border-white/10 bg-slate-900 p-8">
-
             <Sparkles className="text-blue-400" size={32} />
 
             <h3 className="mt-5 text-xl font-semibold text-white">
@@ -93,25 +113,19 @@ function AnalyzePage() {
             <p className="mt-3 leading-7 text-slate-400">
               AI-powered website auditing with actionable recommendations.
             </p>
-
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-slate-900 p-8">
-
             <Search className="text-blue-400" size={32} />
 
-            <h3 className="mt-5 text-xl font-semibold text-white">
-              SEO & GEO
-            </h3>
+            <h3 className="mt-5 text-xl font-semibold text-white">SEO & GEO</h3>
 
             <p className="mt-3 leading-7 text-slate-400">
               Evaluate technical SEO, GEO readiness and AI visibility.
             </p>
-
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-slate-900 p-8">
-
             <ShieldCheck className="text-blue-400" size={32} />
 
             <h3 className="mt-5 text-xl font-semibold text-white">
@@ -119,13 +133,11 @@ function AnalyzePage() {
             </h3>
 
             <p className="mt-3 leading-7 text-slate-400">
-              Receive detailed reports with issues, strengths and recommendations.
+              Receive detailed reports with issues, strengths and
+              recommendations.
             </p>
-
           </div>
-
         </div>
-
       </div>
     </section>
   );
