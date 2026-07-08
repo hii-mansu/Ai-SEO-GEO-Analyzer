@@ -43,11 +43,11 @@ class authService {
     delete userObject.password;
     delete userObject.refreshToken;
 
-    await sendEmail({
-      to: user.email,
-      subject: "Welcome to AI SEO GEO Analyzer",
-      html: signupTemplate(user.name),
-    });
+    // await sendEmail({
+    //   to: user.email,
+    //   subject: "Welcome to AI SEO GEO Analyzer",
+    //   html: signupTemplate(user.name),
+    // });
 
     return {
       accessToken,

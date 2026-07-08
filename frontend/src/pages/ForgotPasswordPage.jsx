@@ -1,18 +1,38 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import AuthCard from "../components/auth/AuthCard";
-import AuthInput from "../components/auth/AuthInput";
-import AuthButton from "../components/auth/AuthButton";
+import { useState } from "react";
+import { forget } from "../services/auth.service";
 
 function ForgotPasswordPage() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (data) => {
-    console.log(data);
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    if(!email.trim()){
+      setError("Enter valid input.");
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+    try {
+      console.log(email);
+      const response = await forget({email:email});
+      alert(response.message);
+      navigate('/');
+    } catch (err) {
+      console.log(err.response?.status);
+console.log(err.response?.data);
+      setError(err.response?.data?.message || "Something went wrong.");
+    } finally{
+      setLoading(false);
+      //setError("");
+    }
   };
 
   return (
@@ -21,22 +41,38 @@ function ForgotPasswordPage() {
       subtitle="Enter your email and we'll send you a password reset link."
     >
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit}
         className="space-y-5"
       >
 
-        <AuthInput
-          label="Email Address"
-          type="email"
-          placeholder="Enter your email"
-          register={register}
-          name="email"
-          error={errors.email}
-        />
+        
+<div>
 
-        <AuthButton>
+      <label className="mb-2 block text-sm font-medium text-slate-300">
+        Email
+      </label>
+
+      <input
+        type='email'
+        placeholder='Enter email.'
+        value={email}
+        name="email"
+        onChange={(e)=>(setEmail(e.target.value))}
+        className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none transition focus:border-blue-500"
+      />
+
+      {error &&  (
+        <p className="mt-2 text-sm text-red-400">
+          {error}
+        </p>
+      )}
+
+    </div>
+
+
+        <button disabled={loading}>
           Send Reset Link
-        </AuthButton>
+        </button>
 
       </form>
 
