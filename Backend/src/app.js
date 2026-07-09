@@ -32,6 +32,7 @@ app.use(cookieParser());
 
 app.use("/", healthRouter);
 app.use("/api/v1/auth", authRouter);
+//app.use("/api/v1/user", authRouter);
 app.use("/api/v1/analysis", analysisRouter);
 
 app.use(errorHandler);

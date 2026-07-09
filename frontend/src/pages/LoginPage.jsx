@@ -2,11 +2,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import AuthCard from "../components/auth/AuthCard";
 import { useState } from "react";
-import { login } from "../services/auth.service";
+import { useAuth } from "../context/AuthContext"
 
 function LoginPage() {
-
   const navigate = useNavigate();
+   const {loginUser, user} = useAuth();
+
+  
+  if(user){
+    return navigate("/");
+  }
+
+
+
   const [formData, setFormData] = useState({
     email:"",
     password:"",
@@ -32,18 +40,14 @@ function LoginPage() {
       return;
     }
 
-    setError("");
-    setLoading(true);
     try {
-      const response = await login(formData);
+      const response = await loginUser(formData);
       alert(response.message);
       navigate('/');
-    } catch (error) {
-      console.log(error);
-      setError(error.response?.data?.message || "Something went wrong.");
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong.");
     } finally{
       setLoading(false);
-      //setError("");
     }
   };
 

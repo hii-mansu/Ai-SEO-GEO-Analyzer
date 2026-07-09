@@ -132,6 +132,20 @@ class authService {
       message: "Changed successfully.",
     };
   }
+
+  async me(userData) {
+    const checkUser = userData; //await User.findById(userData._id);
+    if (!checkUser) {
+      throw new AppError("Unauthenticated", 401);
+    }
+
+    const userObj = checkUser.toObject();
+    delete userObj.password;
+    delete userObj.refreshToken;
+    return {
+      user: userObj,
+    };
+  }
 }
 
 export default new authService();

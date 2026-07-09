@@ -87,6 +87,17 @@ class authController {
     });
   })
 
+    me = asyncHandler(async (req, res) => {
+    const { user } = await authService.me(req.user);
+
+
+    res.status(200).json({
+      success: true,
+      message: "Details fetched successfully.",
+      user,
+    });
+  });
+
 }
 
 export default new authController();

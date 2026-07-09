@@ -10,6 +10,7 @@ import AuthLayout from "../layouts/AuthLayout";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import PricingPage from "../pages/PricingPage";
 import NotFoundPage from "../pages/NotFoundPage";
+import ProfilePage from "../pages/ProfilePage";
 
 function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ function AppRoutes() {
       </Route>
       <Route path="/pricing" element={<PricingPage />} />
       <Route path="*" element={<NotFoundPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
     </Routes>
   );
 }

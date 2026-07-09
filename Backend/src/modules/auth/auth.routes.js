@@ -9,6 +9,7 @@ const authRouter = Router();
 
 authRouter.post("/register", requestValidator(registerSchema), authController.register);
 authRouter.post("/login", requestValidator(loginSchema), authController.login);
+authRouter.get("/me", verifyAccessToken, authController.me);
 authRouter.post("/refresh", verifyRefreshToken, authController.accessTokenGen);
 authRouter.post("/logout", verifyAccessToken, authController.logout);
 authRouter.post("/forget", requestValidator(forgetPassSchema), authController.forgetPass);
