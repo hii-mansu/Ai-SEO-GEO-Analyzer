@@ -44,6 +44,7 @@ const loginUser = async(userData)=>{
     <AuthContext.Provider
       value={{
         user,
+        setUser,
         meloading,
         checkAuth,
         logoutUser,

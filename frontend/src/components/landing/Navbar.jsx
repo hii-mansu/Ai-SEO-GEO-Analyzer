@@ -36,21 +36,21 @@ function Navbar() {
 
         <nav className="hidden items-center gap-8 md:flex">
           <a
-            href="#features"
+            href="/#features"
             className="text-sm text-slate-300 transition hover:text-white"
           >
             Features
           </a>
 
           <a
-            href="#pricing"
+            href="/#pricing"
             className="text-sm text-slate-300 transition hover:text-white"
           >
             Pricing
           </a>
 
           <a
-            href="#faq"
+            href="/#faq"
             className="text-sm text-slate-300 transition hover:text-white"
           >
             FAQ

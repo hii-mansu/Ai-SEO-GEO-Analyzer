@@ -1,18 +1,19 @@
-class userService{
+import User from "./user.model.js";
+import AppError from "../../shared/errors/appError.js";
+
+class userService {
 
 
-      async profile(user) {
-    const checkUser = await User.findById(user._id);
-    if (!checkUser) {
-      throw new AppError("Unauthorized.", 401);
+  async updateProfile(user,userData){
+    const checkUser = await User.findByIdAndUpdate(user._id,{
+      name:userData.name,
+    },{new:true, runValidators: true,});
+    if(!checkUser){
+      throw new AppError("Can't update profile, try after sometime", 401)
     }
-
-    const userObj = checkUser.toObject();
-    delete userObj.password;
-    delete userObj.refreshToken;
     return {
-      user: userObj,
-    };
+      user:checkUser,
+    }
   }
 
 

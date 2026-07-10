@@ -1,10 +1,11 @@
 import api from "../lib/api";
 
 
-// export const me = async(userData)=>{
-//     const response = await api.get("/user/profile", userData);
-//     return response.data;
-// }
+export const updateProfile = async (userData) => {
+  const response = await api.patch("/user/update", userData);
+
+  return response.data;
+};
 
 
 

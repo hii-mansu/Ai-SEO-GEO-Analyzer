@@ -1,12 +1,11 @@
-// import {Router} from "express";
-// import authController from "./auth.controller.js";
-// import requestValidator from "../../middleware/validateRequest.js";
-// import { registerSchema, loginSchema, forgetPassSchema, resetPassSchema } from "./auth.validator.js";
-// import verifyRefreshToken from "../../middleware/verifyRefreshToken.js";
-// import verifyAccessToken from "../../middleware/verifyAccessToken.js";
+import {Router} from "express";
+import userController from "./users.controller.js"
+import requestValidator from "../../middleware/validateRequest.js";
+import verifyAccessToken from "../../middleware/verifyAccessToken.js";
+import { updateProfileSchema } from "./user.validator.js";
 
-// const authRouter = Router();
+const userRouter = Router();
 
-// authRouter.get("/profile", requestValidator(registerSchema), authController.register);
+userRouter.patch("/update", verifyAccessToken, requestValidator(updateProfileSchema), userController.updateProfile);
 
-// export default authRouter;
+export default userRouter;
