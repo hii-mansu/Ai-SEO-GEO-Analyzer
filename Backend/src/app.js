@@ -10,6 +10,7 @@ import userRouter from "./modules/users/user.routes.js";
 import errorHandler from "./middleware/errorHandler.js";
 import cookieParser from "cookie-parser";
 import analysisRouter from "./modules/analysis/analysis.routes.js";
+import subscriptionRouter from "./modules/subscriptions/subscription.routes.js";
 
 
 const app = express();
@@ -35,6 +36,7 @@ app.use("/", healthRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/analysis", analysisRouter);
+app.use("/api/v1/subscriptions", subscriptionRouter);
 
 app.use(errorHandler);
 
