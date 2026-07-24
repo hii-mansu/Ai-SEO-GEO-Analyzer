@@ -1,107 +1,96 @@
-import {
-  Bot,
-  Search,
-  Globe,
-  ShieldCheck,
-  FileSearch,
-  Zap,
-} from "lucide-react";
+import { Search, Bot, Globe, FileSearch, Zap, ShieldCheck, ArrowUpRight } from "lucide-react";
+import SectionHeading from "../common/SectionHeading";
 
 const features = [
   {
     icon: Search,
-    title: "Advanced SEO Analysis",
+    title: "Comprehensive SEO Diagnostics",
     description:
-      "Analyze titles, meta tags, headings, images, links, structured data, robots.txt, sitemap and technical SEO issues.",
+      "Deep scan meta titles, open graph, header hierarchy, canonical links, sitemaps, and robots.txt configurations in real time.",
+    color: "from-cyan-500 to-blue-500",
   },
   {
     icon: Bot,
-    title: "AI & GEO Optimization",
+    title: "Generative Engine Optimization (GEO)",
     description:
-      "Measure your website's readiness for AI search engines including ChatGPT, Gemini, Claude and future answer engines.",
+      "Benchmark your domain's readability and citations for ChatGPT, Perplexity, Gemini, and next-generation Answer Engines.",
+    color: "from-indigo-500 to-purple-500",
   },
   {
     icon: Globe,
-    title: "Actionable Recommendations",
+    title: "Schema & Structured Data Audit",
     description:
-      "Receive clear, AI-generated recommendations with priorities, explanations and practical solutions.",
+      "Verify Schema.org markup JSON-LD objects, organization entities, breadcrumbs, and rich snippet indexing compliance.",
+    color: "from-purple-500 to-pink-500",
   },
   {
     icon: FileSearch,
-    title: "Technical Website Audit",
+    title: "LLMs.txt & Protocol Verification",
     description:
-      "Detect missing metadata, broken SEO practices, accessibility issues and content optimization opportunities.",
+      "Inspect AI crawler directives (`/llms.txt`, `/llms-full.txt`), ensuring AI scrapers index your core product data accurately.",
+    color: "from-blue-500 to-indigo-600",
   },
   {
     icon: Zap,
-    title: "Lightning Fast Reports",
+    title: "Instant AI Code Recommendations",
     description:
-      "Generate complete website analysis within seconds using intelligent caching and optimized AI workflows.",
+      "Get prioritized, copy-pasteable HTML and JSON snippets to resolve critical warnings immediately without trial and error.",
+    color: "from-amber-400 to-rose-500",
   },
   {
     icon: ShieldCheck,
-    title: "Professional Reports",
+    title: "Executive Health Dashboards",
     description:
-      "View comprehensive SEO, GEO and overall health scores in an easy-to-understand dashboard.",
+      "Track your site's SEO & GEO progress over time with clean visual grade cards and downloadable analysis reports.",
+    color: "from-emerald-400 to-teal-500",
   },
 ];
 
 function Features() {
   return (
-    <section
-      id="features"
-      className="bg-slate-950 px-6 py-24"
-    >
-      <div className="mx-auto max-w-7xl">
+    <section id="features" className="relative py-24 bg-[#090D16] overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/2 left-0 h-96 w-96 rounded-full bg-indigo-600/10 blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan-500/10 blur-[150px] pointer-events-none" />
 
-        <div className="mx-auto max-w-3xl text-center">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          badge="Next-Gen Auditing"
+          title="Everything You Need for Search & AI Visibility"
+          subtitle="A complete suite of diagnostic tools engineered to boost organic rank on Google and maximize citations in AI Answer Engines."
+        />
 
-          <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-400">
-            Powerful Features
-          </span>
-
-          <h2 className="mt-6 text-4xl font-bold text-white md:text-5xl">
-            Everything You Need to Optimize Your Website
-          </h2>
-
-          <p className="mt-6 text-lg leading-8 text-slate-400">
-            Powerful AI-driven analysis designed to improve your SEO,
-            GEO, technical health and visibility across modern search engines.
-          </p>
-
-        </div>
-
-        <div className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => {
             const Icon = feature.icon;
-
             return (
               <div
                 key={index}
-                className="group rounded-3xl border border-white/10 bg-slate-900 p-8 transition duration-300 hover:-translate-y-2 hover:border-blue-500/40 hover:bg-slate-800"
+                className="group relative rounded-3xl glass-panel p-7 sm:p-8 transition-all duration-300 hover:-translate-y-1.5 hover:border-indigo-500/40 hover:shadow-2xl hover:shadow-indigo-500/10"
               >
-
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600/10 text-blue-400 transition group-hover:bg-blue-600 group-hover:text-white">
-
-                  <Icon size={28} />
-
+                <div className="flex items-center justify-between">
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon className="h-6 w-6 text-indigo-400 group-hover:text-cyan-300 transition-colors" />
+                  </div>
+                  <span className="text-slate-600 group-hover:text-indigo-400 transition-colors">
+                    <ArrowUpRight className="h-5 w-5" />
+                  </span>
                 </div>
 
-                <h3 className="mt-6 text-2xl font-semibold text-white">
+                <h3 className="mt-6 text-xl font-bold text-white tracking-tight group-hover:text-indigo-200 transition-colors">
                   {feature.title}
                 </h3>
 
-                <p className="mt-4 leading-7 text-slate-400">
+                <p className="mt-3 text-sm leading-relaxed text-slate-400">
                   {feature.description}
                 </p>
 
+                {/* Subtle hover gradient bottom line */}
+                <div className={`absolute bottom-0 left-8 right-8 h-[2px] rounded-full bg-gradient-to-r ${feature.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
               </div>
             );
           })}
-
         </div>
-
       </div>
     </section>
   );

@@ -1,52 +1,56 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles, ShieldCheck, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
+import Button from "../common/Button";
 
 function CTA() {
   return (
-    <section className="bg-slate-950 px-6 py-24">
-      <div className="mx-auto max-w-6xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 p-12 text-center shadow-2xl">
+    <section className="relative py-24 bg-[#090D16] overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        
+        {/* Glow halo */}
+        <div className="relative rounded-3xl p-8 sm:p-14 overflow-hidden border border-indigo-500/30 bg-gradient-to-r from-indigo-950 via-slate-900 to-slate-950 shadow-2xl shadow-indigo-600/20">
+          
+          <div className="absolute top-0 right-0 h-80 w-80 rounded-full bg-cyan-400/20 blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-indigo-600/20 blur-[100px] pointer-events-none" />
 
-        <span className="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur">
-          AI Powered SEO • GEO • AEO
-        </span>
+          <div className="relative z-10 flex flex-col items-center text-center max-w-3xl mx-auto">
+            <span className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-semibold text-indigo-300">
+              <Sparkles className="h-3.5 w-3.5 text-cyan-300" />
+              Instant Domain Diagnostics
+            </span>
 
-        <h2 className="mt-6 text-4xl font-bold text-white md:text-5xl">
-          Ready to Improve Your Website?
-        </h2>
+            <h2 className="mt-6 text-3xl font-black tracking-tight text-white sm:text-5xl leading-tight">
+              Ready to Claim Top Rank on Search & AI Engines?
+            </h2>
 
-        <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-blue-100">
-          Analyze your website in seconds and receive actionable AI-powered
-          recommendations to improve SEO, GEO, technical health, and AI search
-          visibility.
-        </p>
+            <p className="mt-4 text-base sm:text-lg text-slate-300 leading-relaxed">
+              Start auditing your website in seconds. Get AI recommendations, Schema markup, and LLMs.txt directives right now.
+            </p>
 
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <Link to="/analyze">
+                <Button variant="primary" size="lg" icon={ArrowRight} iconPosition="right">
+                  Analyze Your Website Now
+                </Button>
+              </Link>
+              <Link to="/pricing">
+                <Button variant="outline" size="lg">
+                  View Pricing Plans
+                </Button>
+              </Link>
+            </div>
 
-          <Link
-            to="/analyze"
-            className="flex items-center gap-2 rounded-xl bg-white px-7 py-4 font-semibold text-slate-900 transition hover:scale-105"
-          >
-            Analyze Website
-            <ArrowRight size={18} />
-          </Link>
-
-          <Link
-            to="/pricing"
-            className="rounded-xl border border-white/30 px-7 py-4 font-semibold text-white transition hover:bg-white/10"
-          >
-            View Pricing
-          </Link>
-
-        </div>
-
-        <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-blue-100">
-
-          <div>⚡ Instant AI Analysis</div>
-
-          <div>🚀 Actionable Recommendations</div>
-
-          <div>🌍 SEO + GEO Ready</div>
-
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400 font-medium">
+              <div className="flex items-center gap-1.5">
+                <Zap className="h-4 w-4 text-cyan-400" />
+                <span>Instant 10s Scans</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <ShieldCheck className="h-4 w-4 text-indigo-400" />
+                <span>Zero Installation Required</span>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>

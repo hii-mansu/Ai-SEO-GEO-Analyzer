@@ -1,52 +1,51 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import AuthCard from "../components/auth/AuthCard";
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext"
+import { useAuth } from "../context/AuthContext";
+import { Mail, Lock, ArrowRight } from "lucide-react";
+import Input from "../components/common/Input";
+import Button from "../components/common/Button";
 
 function LoginPage() {
   const navigate = useNavigate();
-   const {loginUser, user} = useAuth();
+  const { loginUser, user } = useAuth();
 
-  
-  if(user){
-    return navigate("/");
+  if (user) {
+    navigate("/", { replace: true });
+    return null;
   }
 
-
-
   const [formData, setFormData] = useState({
-    email:"",
-    password:"",
+    email: "",
+    password: "",
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError]= useState("");
+  const [error, setError] = useState("");
 
-  const handleChange = (e)=>{
-    const {name, value} = e.target;
-    setFormData((prev)=>({
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]:value,
-    }))
-  }
-  
+      [name]: value,
+    }));
+    if (error) setError("");
+  };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    if(!formData.email.trim() || !formData.password.trim()){
-      setError("Enter valid input.");
+    if (!formData.email.trim() || !formData.password.trim()) {
+      setError("Please enter both email and password.");
       return;
     }
 
+    setLoading(true);
     try {
-      const response = await loginUser(formData);
-      alert(response.message);
-      navigate('/');
+      await loginUser(formData);
+      navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong.");
-    } finally{
+      setError(err.response?.data?.message || "Invalid credentials. Please try again.");
+    } finally {
       setLoading(false);
     }
   };
@@ -54,74 +53,65 @@ function LoginPage() {
   return (
     <AuthCard
       title="Welcome Back"
-      subtitle="Sign in to continue to SEO GEO Analyzer."
+      subtitle="Sign in to your account to manage reports and website audits."
     >
       <form onSubmit={handleSubmit} className="space-y-5">
-        
-        <div>
+        <Input
+          label="Email Address"
+          type="email"
+          name="email"
+          placeholder="name@company.com"
+          value={formData.email}
+          onChange={handleChange}
+          icon={Mail}
+          required
+        />
 
-      <label className="mb-2 block text-sm font-medium text-slate-300">
-        Email
-      </label>
+        <Input
+          label="Password"
+          type="password"
+          name="password"
+          placeholder="Enter your password"
+          value={formData.password}
+          onChange={handleChange}
+          icon={Lock}
+          required
+          error={error}
+        />
 
-      <input
-        type='email'
-        placeholder='Enter email.'
-        value={formData.email}
-        name="email"
-        onChange={handleChange}
-        className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none transition focus:border-blue-500"
-      />
-
-    </div>
-
-    <div>
-
-      <label className="mb-2 block text-sm font-medium text-slate-300">
-        Password
-      </label>
-
-      <input
-        type='password'
-        placeholder='Enter password.'
-        value={formData.password}
-        name="password"
-        onChange={handleChange}
-        className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none transition focus:border-blue-500"
-      />
-
-      {error &&  (
-        <p className="mt-2 text-sm text-red-400">
-          {error}
-        </p>
-      )}
-
-    </div>
-    
-
-      
-
-        <div className="flex justify-end">
+        <div className="flex items-center justify-between text-xs pt-1">
+          <label className="flex items-center gap-2 cursor-pointer text-slate-400">
+            <input type="checkbox" className="rounded border-slate-800 bg-slate-900 text-indigo-500 focus:ring-indigo-500" />
+            <span>Remember me</span>
+          </label>
           <Link
             to="/forgot-password"
-            className="text-sm text-blue-400 hover:text-blue-300"
+            className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
           >
-            Forgot Password?
+            Forgot password?
           </Link>
         </div>
 
-        <button disabled={loading}>
-          Login
-        </button>
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          isLoading={loading}
+          className="w-full shadow-lg shadow-indigo-600/25"
+          icon={ArrowRight}
+          iconPosition="right"
+        >
+          Sign In to Dashboard
+        </Button>
       </form>
 
-      <p className="mt-8 text-center text-slate-400">
+      <p className="mt-8 text-center text-xs sm:text-sm text-slate-400">
         Don't have an account?{" "}
         <Link
           to="/register"
-          className="font-medium text-blue-400 hover:text-blue-300"
+          className="font-bold text-indigo-400 hover:text-indigo-300 transition-colors"
         >
-          Register
+          Create Free Account
         </Link>
       </p>
     </AuthCard>

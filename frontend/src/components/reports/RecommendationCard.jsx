@@ -1,27 +1,28 @@
-import React from 'react'
+import { Sparkles, Lightbulb } from "lucide-react";
 
-const RecommendationCard = ({
-  title,
-  description,
-  priority
-}) => {
+const RecommendationCard = ({ title, description, priority }) => {
   return (
-    <div className="rounded-3xl border border-blue-500/20 bg-blue-500/10 p-6">
+    <div className="rounded-2xl glass-panel p-6 border border-indigo-500/30 bg-indigo-950/20 hover:border-indigo-500/50 transition-all duration-200">
+      <div className="flex items-center justify-between gap-3 border-b border-white/5 pb-3.5 mb-3.5">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-500/20 text-indigo-300">
+            <Lightbulb className="h-4 w-4" />
+          </div>
+          <h3 className="text-base font-bold text-white tracking-tight">{title}</h3>
+        </div>
 
-        <h2 className="text-lg font-semibold text-blue-500">
-        {priority}
-      </h2>
+        {priority && (
+          <span className="rounded-full bg-indigo-500/20 px-3 py-1 text-[11px] font-bold text-indigo-300 border border-indigo-500/30 uppercase tracking-wider">
+            {priority}
+          </span>
+        )}
+      </div>
 
-      <h3 className="text-lg font-semibold text-white">
-        {title}
-      </h3>
-
-      <p className="mt-3 leading-7 text-slate-300">
+      <p className="text-xs sm:text-sm leading-relaxed text-slate-300">
         {description}
       </p>
-
     </div>
   );
-}
+};
 
-export default RecommendationCard
+export default RecommendationCard;

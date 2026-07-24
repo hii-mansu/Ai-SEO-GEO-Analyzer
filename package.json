@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "date-fns": "^4.4.0"
+    "express-rate-limit": "^8.5.2",
+    "rate-limit-redis": "^5.0.0"
   }
 }

@@ -1,102 +1,89 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import AuthCard from "../components/auth/AuthCard";
 import { useState } from "react";
 import { reset } from "../services/auth.service";
+import { Lock, ArrowRight } from "lucide-react";
+import Input from "../components/common/Input";
+import Button from "../components/common/Button";
 
 function ResetPasswordPage() {
-
-  const { token } = useParams();
-
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    password:"",
-    token,
+    password: "",
   });
 
-  const handleChange = (e)=>{
-    const {name, value} = e.target;
-    setFormData((prev)=>({
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]:value,
-    }))
-  }
+      [name]: value,
+    }));
+    if (error) setError("");
+  };
 
-
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!formData.password.trim() || !formData.confPass.trim() || !(formData.password.length >=8)){
-      setError("Password and Confirm Password must be same, and 8 charecter long.");
+    if (!formData.password.trim() || formData.password.length < 8) {
+      setError("Password must be at least 8 characters long.");
       return;
     }
 
     setError("");
     setLoading(true);
     try {
-      const response = await reset({password:formData.password});
-      alert(response.message);
-      navigate('/');
+      const response = await reset({ password: formData.password });
+      if (response?.message) {
+        alert(response.message);
+      }
+      navigate("/login");
     } catch (err) {
-      console.log(err.response?.status);
-console.log(err.response?.data);
-      setError(err.response?.data?.message || "Something went wrong.");
-    } finally{
+      setError(err.response?.data?.message || "Failed to reset password. Link may be expired.");
+    } finally {
       setLoading(false);
-      //setError("");
     }
-  };
-
-  const onSubmit = (data) => {
-    console.log(data);
   };
 
   return (
     <AuthCard
-      title="Reset Password"
-      subtitle="Create a new password for your account."
+      title="Set New Password"
+      subtitle="Enter a new secure password for your account."
     >
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-5"
-      >
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <Input
+          label="New Password"
+          type="password"
+          name="password"
+          placeholder="At least 8 characters"
+          value={formData.password}
+          onChange={handleChange}
+          icon={Lock}
+          required
+          error={error}
+        />
 
-
-<div>
-
-      <label className="mb-2 block text-sm font-medium text-slate-300">
-        Password
-      </label>
-
-      <input
-        type='password'
-        placeholder='Enter new password.'
-        value={formData.password}
-        name="password"
-        onChange={handleChange}
-        className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none transition focus:border-blue-500"
-      />
-
-
-    </div>
-
-        
-
-        <button type="submit" disabled={loading}>
-  {loading ? "Resetting..." : "Reset Password"}
-</button>
-
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          isLoading={loading}
+          className="w-full shadow-lg shadow-indigo-600/25"
+          icon={ArrowRight}
+          iconPosition="right"
+        >
+          Update Password
+        </Button>
       </form>
 
-      <p className="mt-8 text-center text-slate-400">
-        Back to{" "}
+      <p className="mt-8 text-center text-xs sm:text-sm text-slate-400">
+        Remembered your credentials?{" "}
         <Link
           to="/login"
-          className="font-medium text-blue-400 hover:text-blue-300"
+          className="font-bold text-indigo-400 hover:text-indigo-300 transition-colors"
         >
-          Login
+          Sign In
         </Link>
       </p>
     </AuthCard>

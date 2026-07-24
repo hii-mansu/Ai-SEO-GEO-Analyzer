@@ -3,9 +3,10 @@ import userController from "./users.controller.js"
 import requestValidator from "../../middleware/validateRequest.js";
 import verifyAccessToken from "../../middleware/verifyAccessToken.js";
 import { updateProfileSchema } from "./user.validator.js";
+import { registerLimiter } from "../../middleware/rateLimiter.js";
 
 const userRouter = Router();
 
-userRouter.patch("/update", verifyAccessToken, requestValidator(updateProfileSchema), userController.updateProfile);
+userRouter.patch("/update", registerLimiter, verifyAccessToken, requestValidator(updateProfileSchema), userController.updateProfile);
 
 export default userRouter;

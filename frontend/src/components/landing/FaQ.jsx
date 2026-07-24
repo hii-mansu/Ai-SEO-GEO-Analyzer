@@ -1,98 +1,82 @@
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, HelpCircle } from "lucide-react";
+import SectionHeading from "../common/SectionHeading";
 
 const faqs = [
   {
     question: "What is SEO GEO Analyzer?",
     answer:
-      "SEO GEO Analyzer is an AI-powered platform that analyzes your website for SEO, Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and technical issues, providing actionable recommendations to improve visibility.",
+      "SEO GEO Analyzer is an AI-driven website diagnostic platform designed to evaluate traditional organic SEO alongside Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO). It provides actionable recommendations so your website ranks high on Google and gets cited in ChatGPT, Gemini, and Perplexity.",
   },
   {
-    question: "How does the analysis work?",
+    question: "What makes GEO & AEO optimization different from normal SEO?",
     answer:
-      "Simply enter your website URL, and our AI scans your website, evaluates technical SEO, content quality, AI readiness, and generates a detailed report within seconds.",
+      "Traditional SEO focuses on keywords and backlinks for search result pages. GEO (Generative Engine Optimization) optimizes content structure, entity relationships, Schema markup, and /llms.txt directives so AI models can synthesize, cite, and reference your business directly in conversational answers.",
   },
   {
-    question: "Is the free plan really free?",
+    question: "How fast is the website audit scan?",
     answer:
-      "Yes. You can analyze one website per day without creating an account. Registered users receive five free analyses per day.",
+      "Scans take less than 10 seconds. Our high-throughput crawler fetches HTML content, inspects head tags, checks Schema.org JSON-LD scripts, evaluates AI accessibility, and runs real-time rule checks.",
   },
   {
-    question: "What search engines and AI platforms are supported?",
+    question: "Do I need coding knowledge to fix identified issues?",
     answer:
-      "Our recommendations help optimize your website for Google Search as well as AI-powered search platforms like ChatGPT, Gemini, Claude, and other answer engines.",
+      "No. Each report provides clear explanations, priority levels, and ready-to-copy code fixes (such as JSON-LD schema blocks or meta tags) that you or your web designer can paste directly into your site.",
   },
   {
-    question: "Do I need technical knowledge?",
+    question: "Is there a free trial or free scan tier?",
     answer:
-      "No. Every issue includes a clear explanation, why it matters, and practical recommendations that anyone can follow.",
-  },
-  {
-    question: "Will my website data be stored?",
-    answer:
-      "Analysis results are stored only for authenticated users. Guest users receive their report without permanently storing the analysis.",
+      "Yes! You can run free scans instantly without entering payment information. Free accounts get regular daily scan credits.",
   },
 ];
 
 function FaQ() {
-  const [open, setOpen] = useState(0);
+  const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section
-      id="faq"
-      className="bg-slate-950 px-6 py-24"
-    >
-      <div className="mx-auto max-w-4xl">
+    <section id="faq" className="relative py-24 bg-[#090D16]">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          badge="Got Questions?"
+          title="Frequently Asked Questions"
+          subtitle="Everything you need to know about SEO GEO Analyzer, AI citations, and website diagnostics."
+        />
 
-        <div className="text-center">
-
-          <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-400">
-            Frequently Asked Questions
-          </span>
-
-          <h2 className="mt-6 text-4xl font-bold text-white md:text-5xl">
-            Everything You Need to Know
-          </h2>
-
-          <p className="mt-5 text-lg text-slate-400">
-            Answers to the most common questions about SEO GEO Analyzer.
-          </p>
-
-        </div>
-
-        <div className="mt-16 space-y-5">
-
-          {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className="overflow-hidden rounded-2xl border border-white/10 bg-slate-900"
-            >
-              <button
-                onClick={() =>
-                  setOpen(open === index ? -1 : index)
-                }
-                className="flex w-full items-center justify-between px-6 py-5 text-left"
+        <div className="mt-16 space-y-4">
+          {faqs.map((faq, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <div
+                key={index}
+                className={`overflow-hidden rounded-2xl transition-all duration-300 ${
+                  isOpen
+                    ? "glass-panel border-indigo-500/40 shadow-lg shadow-indigo-500/10"
+                    : "glass-panel border-white/5 hover:border-slate-700"
+                }`}
               >
-                <span className="text-lg font-semibold text-white">
-                  {faq.question}
-                </span>
+                <button
+                  onClick={() => setOpenIndex(isOpen ? -1 : index)}
+                  className="flex w-full items-center justify-between p-6 text-left focus:outline-none"
+                >
+                  <span className="flex items-center gap-3 text-base sm:text-lg font-bold text-white pr-4">
+                    <HelpCircle className="h-5 w-5 text-indigo-400 shrink-0" />
+                    {faq.question}
+                  </span>
+                  <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-900 text-slate-300 border border-slate-800 transition-transform duration-200 ${
+                    isOpen ? "rotate-180 bg-indigo-600 text-white border-indigo-500" : ""
+                  }`}>
+                    <ChevronDown className="h-4 w-4" />
+                  </div>
+                </button>
 
-                <ChevronDown
-                  size={22}
-                  className={`transition-transform ${
-                    open === index ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-
-              {open === index && (
-                <div className="border-t border-white/10 px-6 py-5 text-slate-400 leading-7">
-                  {faq.answer}
-                </div>
-              )}
-            </div>
-          ))}
-
+                {isOpen && (
+                  <div className="border-t border-slate-800/80 px-6 py-5 text-sm text-slate-300 leading-relaxed bg-slate-950/40 animate-in fade-in duration-200">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

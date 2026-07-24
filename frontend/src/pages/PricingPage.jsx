@@ -1,9 +1,19 @@
-import React from 'react'
+import PricingSection from "../components/landing/Pricing";
+import FAQ from "../components/landing/FAQ";
+import CTA from "../components/landing/CTA";
+import Footer from "../components/landing/Footer";
 
-const PricingPage = () => {
+function PricingPage() {
   return (
-    <div>PricingPage</div>
-  )
+    <div className="min-h-screen bg-[#090D16]">
+      <div className="pt-8">
+        <PricingSection />
+        <FAQ />
+        <CTA />
+        <Footer />
+      </div>
+    </div>
+  );
 }
 
-export default PricingPage
+export default PricingPage;

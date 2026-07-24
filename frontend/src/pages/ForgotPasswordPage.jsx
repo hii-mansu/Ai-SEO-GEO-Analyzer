@@ -1,88 +1,90 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import AuthCard from "../components/auth/AuthCard";
 import { useState } from "react";
 import { forget } from "../services/auth.service";
+import { Mail, ArrowRight, ArrowLeft } from "lucide-react";
+import Input from "../components/common/Input";
+import Button from "../components/common/Button";
 
 function ForgotPasswordPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
-
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!email.trim()){
-      setError("Enter valid input.");
+    if (!email.trim()) {
+      setError("Please enter your registered email address.");
       return;
     }
 
     setError("");
     setLoading(true);
     try {
-      console.log(email);
-      const response = await forget({email:email});
-      alert(response.message);
-      navigate('/');
+      const response = await forget({ email });
+      setSuccessMsg(response?.message || "Password reset instructions have been sent to your email.");
     } catch (err) {
-      console.log(err.response?.status);
-console.log(err.response?.data);
-      setError(err.response?.data?.message || "Something went wrong.");
-    } finally{
+      setError(err.response?.data?.message || "Failed to process request. Please check email address.");
+    } finally {
       setLoading(false);
-      //setError("");
     }
   };
 
   return (
     <AuthCard
       title="Forgot Password?"
-      subtitle="Enter your email and we'll send you a password reset link."
+      subtitle="Enter your email and we'll send you instructions to reset your password."
     >
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-5"
-      >
+      {successMsg ? (
+        <div className="space-y-6 text-center">
+          <div className="rounded-2xl bg-emerald-950/30 p-5 border border-emerald-500/30 text-emerald-300 text-xs sm:text-sm">
+            {successMsg}
+          </div>
+          <Link to="/login" className="block w-full">
+            <Button variant="primary" size="lg" className="w-full">
+              Return to Login
+            </Button>
+          </Link>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <Input
+            label="Email Address"
+            type="email"
+            placeholder="name@company.com"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (error) setError("");
+            }}
+            icon={Mail}
+            required
+            error={error}
+          />
 
-        
-<div>
-
-      <label className="mb-2 block text-sm font-medium text-slate-300">
-        Email
-      </label>
-
-      <input
-        type='email'
-        placeholder='Enter email.'
-        value={email}
-        name="email"
-        onChange={(e)=>(setEmail(e.target.value))}
-        className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none transition focus:border-blue-500"
-      />
-
-      {error &&  (
-        <p className="mt-2 text-sm text-red-400">
-          {error}
-        </p>
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            isLoading={loading}
+            className="w-full shadow-lg shadow-indigo-600/25"
+            icon={ArrowRight}
+            iconPosition="right"
+          >
+            Send Reset Link
+          </Button>
+        </form>
       )}
 
-    </div>
-
-
-        <button disabled={loading}>
-          Send Reset Link
-        </button>
-
-      </form>
-
-      <p className="mt-8 text-center text-slate-400">
-        Remember your password?{" "}
+      <p className="mt-8 text-center text-xs sm:text-sm text-slate-400">
         <Link
           to="/login"
-          className="font-medium text-blue-400 hover:text-blue-300"
+          className="inline-flex items-center gap-1.5 font-bold text-indigo-400 hover:text-indigo-300 transition-colors"
         >
-          Login
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Back to Login
         </Link>
       </p>
     </AuthCard>
