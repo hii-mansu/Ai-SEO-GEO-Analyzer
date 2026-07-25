@@ -8,6 +8,7 @@
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Ready-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](docker-compose.yml)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 *Audit websites for search engines & AI engines. Maximize visibility across Google, ChatGPT, Perplexity & Gemini.*
@@ -78,7 +79,29 @@ seo-geo-analyzer/
 
 ---
 
-### 1. Set Up Backend
+### Option 1 — Docker Compose (Fastest & Containerized)
+
+Ensure you have Docker & Docker Compose installed, then run:
+
+```bash
+# 1. Create Backend environment file
+cp Backend/.env.example Backend/.env
+
+# 2. Build and start all services (Frontend, Backend, MongoDB, Redis)
+docker compose up -d --build
+```
+
+Container Names:
+- **`seo-frontend`**: React web application running on `http://localhost:80`
+- **`seo-backend`**: Express API server running on `http://localhost:5000`
+- **`seo-mongodb`**: MongoDB Database instance on `localhost:27017`
+- **`seo-redis`**: Redis instance on `localhost:6379`
+
+---
+
+### Option 2 — Manual Setup (Local Node.js)
+
+#### 1. Set Up Backend
 
 ```bash
 # Navigate to the Backend folder
@@ -117,7 +140,7 @@ The backend server will start at `http://localhost:5000`.
 
 ---
 
-### 2. Set Up Frontend
+#### 2. Set Up Frontend
 
 ```bash
 # Navigate to the frontend folder

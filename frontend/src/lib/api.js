@@ -2,8 +2,10 @@ import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 
 
+const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5000/api/v1';
+
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api/v1',
+    baseURL: BASE_URL,
     withCredentials: true,
 });
 
@@ -33,7 +35,7 @@ api.interceptors.response.use(
 
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/v1/auth/refresh",
+          `${BASE_URL}/auth/refresh`,
           {},
           {
             withCredentials: true,
