@@ -8,10 +8,12 @@ class authController {
   register = asyncHandler(async (req, res) => {
     const { accessToken, refreshToken, user } = await authService.register(req.body);
 
+    const isProduction = env.NODE_ENV === "production" || env.NODE_ENV === "prod";
+
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: env.NODE_ENV === "prod",
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -26,10 +28,12 @@ class authController {
   login = asyncHandler(async (req, res) => {
     const { accessToken, refreshToken, user } = await authService.login(req.body);
 
+    const isProduction = env.NODE_ENV === "production" || env.NODE_ENV === "prod";
+
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: env.NODE_ENV === "prod",
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -47,10 +51,12 @@ class authController {
       refreshToken:null
     })
 
+    const isProduction = env.NODE_ENV === "production" || env.NODE_ENV === "prod";
+
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: env.NODE_ENV === "prod",
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
     });
 
     return res.status(200).json({
