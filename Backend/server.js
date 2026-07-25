@@ -4,7 +4,7 @@ import env from "./src/config/env.js";
 import connectDB from "./src/database/connection.js";
 
 
-const PORT = env.port || 5000;
+const PORT = env.PORT || 5000;
 
 const startServer = async()=>{
     await connectDB();

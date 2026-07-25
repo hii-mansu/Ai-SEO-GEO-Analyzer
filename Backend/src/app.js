@@ -18,7 +18,7 @@ const app = express();
 app.use(helmet());
 
 app.use(cors({
-    origin: 'http://localhost:5173' || "*", //env.clientUrl
+    origin: env.CLIENT_URL || "https://analyzer.mansusingh.in",
     credentials: true,
 }));
 
