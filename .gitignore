@@ -16,6 +16,7 @@ dist-ssr
 .env
 coverage
 .vscode
+.vercel
 
 .DS_Store
 # Editor directories and files

@@ -12,10 +12,12 @@ class AnalysisController {
         expiresIn: "1d",
       });
 
+      const isProduction = env.NODE_ENV === "production" || env.NODE_ENV === "prod";
+
       res.cookie("guest_analysis", token, {
         httpOnly: true,
-        secure: env.NODE_ENV === "production",
-        sameSite: "lax",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
         maxAge: 24 * 60 * 60 * 1000,
       });
     }

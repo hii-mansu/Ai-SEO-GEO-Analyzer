@@ -15,10 +15,12 @@ import subscriptionRouter from "./modules/subscriptions/subscription.routes.js";
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 app.use(helmet());
 
 app.use(cors({
-    origin: 'http://localhost:5173' || "*", //env.clientUrl
+    origin: env.CLIENT_URL || "https://analyzer.mansusingh.in",
     credentials: true,
 }));
 

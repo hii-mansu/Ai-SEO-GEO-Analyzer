@@ -1,5 +1,5 @@
 import PricingSection from "../components/landing/Pricing";
-import FAQ from "../components/landing/FAQ";
+import FAQ from "../components/landing/FaQ";
 import CTA from "../components/landing/CTA";
 import Footer from "../components/landing/Footer";
 
