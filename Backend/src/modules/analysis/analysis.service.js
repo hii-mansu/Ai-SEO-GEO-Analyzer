@@ -29,7 +29,7 @@ class AnalysisService {
           $lt: tomorrow,
         },
       });
-      if (count >= 5) {
+      if (count >= 2) {
         throw new AppError("You have reached your daily limit.", 429);
       }
     }
@@ -76,7 +76,7 @@ class AnalysisService {
       `analysis:${normalizedUrl}`,
       JSON.stringify(finalAiAnalysis),
       {
-        EX: 60 * 60 * 24,
+        EX: 60 * 60 * 24 * 30, 
       },
     );
 

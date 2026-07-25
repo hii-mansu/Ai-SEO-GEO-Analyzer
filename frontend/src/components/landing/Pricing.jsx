@@ -15,7 +15,7 @@ function PricingSection() {
       billingCycle: "month",
       popular: false,
       features: [
-        "5 Domain Audits / day",
+        "2 Domain Audits / day",
         "Basic SEO Technical Checks",
         "OpenGraph & Metadata Scan",
         "Summary Report View",

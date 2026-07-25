@@ -12,7 +12,7 @@ const plans = [
     currency: "INR",
     billingCycle: "month",
     features: [
-      "5 AI analyses per day",
+      "2 AI analyses per day",
       "SEO & GEO Score",
       "AI-powered recommendations",
       "Basic website reports",
