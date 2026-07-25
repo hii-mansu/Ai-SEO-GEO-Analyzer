@@ -1,0 +1,28 @@
+name: Frontend CD (Vercel)
+
+on:
+  push:
+    branches:
+      - deployment
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/vercel-deploy.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Frontend to Vercel
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Deploy Frontend to Vercel
+        working-directory: ./frontend
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+        run: npx vercel@latest deploy --prod --build-env VITE_BASE_URL="${{ secrets.VITE_BASE_URL }}" --token=${{ secrets.VERCEL_TOKEN }} --yes
